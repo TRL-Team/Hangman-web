@@ -41,7 +41,7 @@ func main() {
 }
 
 func game(w http.ResponseWriter, r *http.Request) {
-	template2 := template.Must(template.ParseFiles("./jeux.html"))
+	template2 := template.Must(template.ParseFiles("./easy.html"))
 
 	page2 := gamePage{
 		Title:    "Play",
