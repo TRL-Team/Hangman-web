@@ -1,4 +1,4 @@
-
+// Déclaration de mes varibles select depuis mon html,css
 let images = document.querySelectorAll('img');
 let nbSlide = images.length;
 let suivant = document.querySelector('.right');
@@ -39,8 +39,9 @@ precedent.addEventListener('click', slidePrecedente);
 
 function Start(){
 
-    //check class list si il y a la active
-    //en fonction changer l'action du furmulaire
+
+
+    
 }
 
 play.addEventListener('click', Start);

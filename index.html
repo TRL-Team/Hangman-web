@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/slider.css">
-    <title>Hangman</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/slider.css">
+  <link rel="icon" type="image/png" href="./IMAGES/favicon.png">
+  <title>Hangman game</title>
 </head>
-<body>
+
+<body> 
   <div id="Site">
     <div class="container">
-          <h1 class="logo">{{.Title}}</h1>
-          <div class="slider">
-          <img class="active" src="images/slide1.png">
-          <img src="images/slide2.png">
-          <img src="images/slide3.png">
-        </div>
-        <div class="cont-flc">
-          <div class="flc-nav left">←</div>
-          <div class="flc-nav right">→</div>
-        </div>
-        
-        <div id="button">
-          <input type="image" src="images/btn-play.png" alt="Play" id="btn-play"> 
-        </div>
-        
+      <h1 class="logo">{{.Title}}</h1>
+      <div class="slider">
+        <img class="active" src="images/slide1.png">
+        <img src="images/slide2.png">
+        <img src="images/slide3.png">
       </div>
-      
+      <div class="cont-flc">
+        <div class="flc-nav left">←</div>
+        <div class="flc-nav right">→</div>
+      </div>
+
+      <div id="button">
+       <a href="jeu"><input type="image" src="images/btn-play.png" alt="Play" id="btn-play"></a>
+      </div>
+
     </div>
-    <script src="js/slider.js"></script>
+  </div>
+  <script src="js/slider.js"></script>
 </body>
+
 </html>

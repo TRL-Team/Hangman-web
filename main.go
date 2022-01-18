@@ -8,9 +8,10 @@ import (
 type Firstpage struct {
 	Title string
 }
-type Gamepage struct {
+
+type gamePage struct {
 	Title    string
-	subtitle string
+	Subtitle string
 }
 
 func main() {
@@ -26,9 +27,11 @@ func main() {
 	js := http.FileServer(http.Dir("./js"))
 	http.Handle("/js/", http.StripPrefix("/js", js))
 
+	http.HandleFunc("/jeu", game)
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		page := Firstpage{
-			Title: "Hagman Games",
+			Title: "Hangman Games",
 		}
 		template.Execute(w, page)
 	})
@@ -37,14 +40,12 @@ func main() {
 
 }
 
-func game() {
+func game(w http.ResponseWriter, r *http.Request) {
 	template2 := template.Must(template.ParseFiles("./jeux.html"))
 
-	http.HandleFunc("/jeux", func(w http.ResponseWriter, r *http.Request) {
-		page2 := Gamepage{
-			Title:    "Play",
-			subtitle: "Vous êtes dans le mode ...",
-		}
-		template2.Execute(w, page2)
-	})
+	page2 := gamePage{
+		Title:    "Play",
+		Subtitle: "Coucou",
+	}
+	template2.Execute(w, page2)
 }
