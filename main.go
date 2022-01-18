@@ -1,50 +1,44 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"text/template"
 )
 
 type Firstpage struct {
-	Title string
-}
-type Gamepage struct {
-	Title    string
-	subtitle string
+	Valeur string
 }
 
 func main() {
-
-	template := template.Must(template.ParseFiles("./index.html"))
-
-	css := http.FileServer(http.Dir("./css"))
-	http.Handle("/css/", http.StripPrefix("/css/", css))
-
-	img := http.FileServer(http.Dir("./images"))
-	http.Handle("/images/", http.StripPrefix("/images", img))
-
-	js := http.FileServer(http.Dir("./js"))
-	http.Handle("/js/", http.StripPrefix("/js", js))
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		page := Firstpage{
-			Title: "Hagman Games",
+	templates := template.Must(template.ParseFiles("./index.html"))
+	fs := http.FileServer(http.Dir("./css"))
+	http.Handle("/css/", http.StripPrefix("/css/", fs))
+	http.HandleFunc("/home", func(w http.ResponseWriter, r *http.Request) {
+		Page := Firstpage{
+			Valeur: "hangman trl",
 		}
-		template.Execute(w, page)
+		fmt.Println(Page.Valeur)
+		templates.Execute(w, Page)
 	})
-
-	http.ListenAndServe(":80", nil)
-
+	http.ListenAndServe(":3634", nil)
 }
 
-func game() {
-	template2 := template.Must(template.ParseFiles("./jeux.html"))
+type Secondpage struct {
+	valeurs string
+}
 
-	http.HandleFunc("/jeux", func(w http.ResponseWriter, r *http.Request) {
-		page2 := Gamepage{
-			Title:    "Play",
-			subtitle: "Vous êtes dans le mode ...",
+func facile() {
+
+	templates := template.Must(template.ParseFiles("./indexx.html"))
+	fs := http.FileServer(http.Dir("./css"))
+	http.Handle("/css/", http.StripPrefix("/css/", fs))
+	http.HandleFunc("/home", func(w http.ResponseWriter, r *http.Request) {
+		Pages := Secondpage{
+			valeurs: "hangman trl",
 		}
-		template2.Execute(w, page2)
+		templates.Execute(w, Pages)
 	})
+
+	http.ListenAndServe(":3634", nil)
 }

@@ -1,0 +1,37 @@
+*{
+    background-color:rgb(84, 111, 120);
+}
+p {
+    color :black;
+    text-align: center;
+    
+}
+h1 {
+    color:black;
+    text-align: center;
+}
+.first {
+color: black;
+font-size: x-small;
+float: left;
+
+}
+
+.styled:hover {
+    background-color: rgb(219, 22, 22);
+}
+
+.styled:active {
+    box-shadow: inset -2px -2px 3px rgba(247, 18, 18, 0.6),
+                inset 2px 2px 3px rgba(225, 18, 18, 0.6);
+}
+label {
+    float: left;
+
+}
+
+button {
+    font-style: oblique;
+    border-radius: 2vmax;
+   
+}
