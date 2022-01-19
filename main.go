@@ -1,9 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"bufio"
+	"log"
+	"math/rand"
 	"net/http"
+	"os"
 	"text/template"
+	"time"
 )
 
 // ┌────────────────────────────────────────────────────────────┐
@@ -118,7 +122,18 @@ Exemple :
 "carotte"
 */
 func getNewWord() string {
-
+	words, err := os.Open("./files/words.txt")
+	if err != nil {
+		log.Fatal("y'a r", err)
+	}
+	motsDuFichier := bufio.NewScanner(words)
+	var mots []string
+	for motsDuFichier.Scan() {
+		mots = append(mots, motsDuFichier.Text())
+	}
+	rand.Seed(time.Now().UTC().UnixNano())
+	chiffre := rand.Intn(len(mots))
+	return (mots[chiffre])
 }
 
 /*
@@ -142,20 +157,6 @@ word = Fifa
 return => _ _ _ _
 */
 func initializeCurrentWord(word string) []string {
-
-	var pendu []rune
-	for i := 0; i < len(bot); i++ {
-		pendu = append(pendu, '_')
-	}
-
-	for i := 0; i < len(tab); i++ {
-		pendu[tab[i]] = bot[tab[i]]
-	}
-
-	for i := 0; i < len(pendu); i++ {
-		fmt.Printf("%c ", pendu[i])
-	}
-
 }
 
 /*
