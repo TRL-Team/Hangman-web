@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="/static/hangman.css">
+</head>
+<body>
+    <button class="grey">
+        <a href="/">← Back to home</a>
+    </button>
+
+    {{if .GameOver}}
+        <div>{{.GameOver}}</div>
+    {{end}}
+    <div class="Hangman error-{{.Errors}}"></div>
+
+    <h1>Letters</h1>
+    <div class="flex">
+        {{range .Letters}}
+            {{if .Used}}
+                <button class="letter selectable" disabled>{{.Value}}</button>
+            {{else}}
+                <form method="POST" action="/play">
+                    <input name="letter" type="hidden" value="{{.Value}}">
+                    <button class="letter selectable" type="submit">{{.Value}}</button>
+                </form>
+            {{end}}
+        {{end}}
+    </div>
+
+    <h1>Game to find (errors: {{.Errors}} / 6)</h1>
+    <div class="flex">
+        {{range .CurrentWord}}
+            {{if eq . " " }}
+                <div class="letter space">{{.}}</div>
+            {{else}}
+                <div class="letter">{{.}}</div>
+            {{end}}
+        {{end}}
+    </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+select {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button {
+    display: flex;
+    margin: 0 20px;
+    border: 2px solid black;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 4px 4px #aaa;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+button.grey {
+    background-color: #ccc;
+}
+
+button.green {
+    background-color: #4caf50;
+}
+
+button:hover {
+    opacity: .7;
+}
+
+.letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-family: monospace;
+}
+
+.letter.selectable {
+    border: 1px solid black;
+    margin: 10px;
+}
+
+.letter:disabled {
+    cursor: not-allowed;
+    opacity: .3;
+}
+
+.letter:disabled:hover {
+    opacity: .3;
+}
+
+.letter.space {
+    border: none;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.Hangman {
+    position: relative;
+    background-image: url("/static/hangman.png");
+    width: 75px;
+    height: 200px;
+    overflow: hidden;
+}
+.Hangman.error-1 { background-position: -75px; }
+.Hangman.error-2 { background-position: -150px; }
+.Hangman.error-3 { background-position: -225px; }
+.Hangman.error-4 { background-position: -300px; }
+.Hangman.error-5 { background-position: -375px; }
+.Hangman.error-6 { background-position: -450px; }
