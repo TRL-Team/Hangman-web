@@ -1,8 +1,14 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"log"
+	"math/rand"
 	"net/http"
+	"os"
 	"text/template"
+	"time"
 )
 
 // ┌────────────────────────────────────────────────────────────┐
@@ -50,12 +56,13 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	// On met en place ce qui va nous servir pour le jeu
 	case http.MethodGet:
-		word := getNewWord()                            // mot choisi aléatoirement pour le jeu
-		state.CompleteWord = word                       // On sauvegarde le mot complet dans l'état global
-		state.Letters = initializeLetters()             // On sauvegarde la liste des lettres non utilisées dans l'état global
-		state.Errors = 0                                // On sauvegarde le nombre d'erreur dans l'état global
-		state.CurrentWord = initializeCurrentWord(word) // On sauvegarde la version "cryptée" du mot dans l'état global
-		state.GameOver = ""                             // On sauvegarde le message de fin de jeu dans l'état global
+		word := getNewWord() // mot choisi aléatoirement pour le jeu
+		words := getCompleteWord(word)
+		state.CompleteWord = word                        // On sauvegarde le mot complet dans l'état global
+		state.Letters = initializeLetters()              // On sauvegarde la liste des lettres non utilisées dans l'état global
+		state.Errors = 0                                 // On sauvegarde le nombre d'erreur dans l'état global
+		state.CurrentWord = initializeCurrentWord(words) // On sauvegarde la version "cryptée" du mot dans l'état global
+		state.GameOver = ""                              // On sauvegarde le message de fin de jeu dans l'état global
 		page.Execute(w, state)
 
 	// ┌────────────────────────────────┐
@@ -93,7 +100,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 				state.Letters[i] = Letter{Value: v.Value, Used: true}
 			}
 			state.GameOver = "You lose! Game over"
-			state.CurrentWord = getCompleteWord(state.CompleteWord)
+			state.CurrentWord = getCompleteWord(getNewWord())
 
 		case 1:
 			for i, v := range state.Letters {
@@ -117,7 +124,18 @@ Exemple :
 "carotte"
 */
 func getNewWord() string {
-
+	words, err := os.Open("./files/words.txt")
+	if err != nil {
+		log.Fatal("y'a r", err)
+	}
+	motsDuFichier := bufio.NewScanner(words)
+	var mots []string
+	for motsDuFichier.Scan() {
+		mots = append(mots, motsDuFichier.Text())
+	}
+	rand.Seed(time.Now().UTC().UnixNano())
+	chiffre := rand.Intn(len(mots))
+	return (mots[chiffre])
 }
 
 /*
@@ -132,37 +150,15 @@ Exemple :
 ]
 */
 func initializeLetters() []Letter {
-
-	var lettres [26]Letter
-
-	lettres[0] = Letter{Value: "a", Used: false}
-	lettres[1] = Letter{Value: "b", Used: false}
-	lettres[2] = Letter{Value: "c", Used: false}
-	lettres[3] = Letter{Value: "d", Used: false}
-	lettres[4] = Letter{Value: "e", Used: false}
-	lettres[5] = Letter{Value: "f", Used: false}
-	lettres[6] = Letter{Value: "g", Used: false}
-	lettres[7] = Letter{Value: "h", Used: false}
-	lettres[8] = Letter{Value: "i", Used: false}
-	lettres[9] = Letter{Value: "j", Used: false}
-	lettres[10] = Letter{Value: "k", Used: false}
-	lettres[11] = Letter{Value: "l", Used: false}
-	lettres[12] = Letter{Value: "m", Used: false}
-	lettres[13] = Letter{Value: "n", Used: false}
-	lettres[14] = Letter{Value: "o", Used: false}
-	lettres[15] = Letter{Value: "p", Used: false}
-	lettres[16] = Letter{Value: "q", Used: false}
-	lettres[17] = Letter{Value: "r", Used: false}
-	lettres[18] = Letter{Value: "s", Used: false}
-	lettres[19] = Letter{Value: "t", Used: false}
-	lettres[20] = Letter{Value: "u", Used: false}
-	lettres[21] = Letter{Value: "v", Used: false}
-	lettres[22] = Letter{Value: "w", Used: false}
-	lettres[23] = Letter{Value: "x", Used: false}
-	lettres[24] = Letter{Value: "y", Used: false}
-	lettres[25] = Letter{Value: "z", Used: false}
-
-	return lettres[:]
+	var lettre = [26]string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "Z"}
+	for i := 0; i < len(lettre); i++ {
+		ms := Letter{
+			Value: lettre[i],
+			Used:  false,
+		}
+		state.Letters[i] = ms
+	}
+	return state.Letters[:]
 }
 
 /*
@@ -172,7 +168,16 @@ Exemple :
 word = Fifa
 return => _ _ _ _
 */
-func initializeCurrentWord(word string) []string {}
+func initializeCurrentWord(word []string) []string {
+	var tabString []string
+	for i := 0; i < len(word); i++ {
+		tabString = append(tabString, "_ ")
+	}
+	for i := 0; i < len(tabString); i++ {
+		fmt.Printf(tabString[i])
+	}
+	return tabString
+}
 
 /*
 Renvoie le mot sous forme d'un tableau de string
@@ -181,7 +186,15 @@ Exemple :
 word = fifa
 return => ["f","i","f","a"]
 */
-func getCompleteWord(word string) []string {}
+func getCompleteWord(conver string) []string {
+	var motString []string
+	mot := []rune(conver)
+	for i := 0; i < len(mot); i++ {
+		conver = string(mot[i] - 32)
+		motString = append(motString, conver)
+	}
+	return motString
+}
 
 /*
 Renvoie 0 si partie en cours, 1 si c'est gagné, 2 si perdu
@@ -201,7 +214,17 @@ word = ["f","i","f","a"]
 errors = 2
 return 1
 */
-func isGameOver(word []string, errors int) int {}
+func isGameOver(word []string, errors int) int {
+	if errors == 10 {
+		return 2
+	}
+	for i := 0; i < len(word); i++ {
+		if word[i] == "_" {
+			return 0
+		}
+	}
+	return 1
+}
 
 // ┌────────────────────────────────────────────────────────────┐
 // │ Main					             						│
@@ -214,7 +237,6 @@ func main() {
 	// └────────────────────────────────┘
 	fileserver := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static", fileserver))
-
 	// ┌────────────────────────────────┐
 	// │ Routes							│
 	// └────────────────────────────────┘
@@ -224,5 +246,5 @@ func main() {
 	// ┌────────────────────────────────┐
 	// │ Start the server				│
 	// └────────────────────────────────┘
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
